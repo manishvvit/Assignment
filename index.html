@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Ingestor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Log Ingestor</h1>
+    <form id="logForm">
+        <label for="num_logs">Number of logs:</label>
+        <input type="number" id="num_logs" name="num_logs" min="1" value="10">
+        <button type="submit">Generate and Send Logs</button>
+    </form>
+    <div id="output"></div>
+    <script>
+        $(document).ready(function() {
+            $('#logForm').submit(function(event) {
+                event.preventDefault();
+                var num_logs = $('#num_logs').val();
+                $.post('/generate_logs', { num_logs: num_logs }, function(data) {
+                    if (data.status === 'success') {
+                        $('#output').html('<pre>' + data.output + '</pre>');
+                    } else {
+                        $('#output').html('<pre>Error: ' + data.output + '</pre>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
